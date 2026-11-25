@@ -22,10 +22,12 @@ MAX_CHARS = 200
 
 def main() -> None:
     line = ENTRY.strip()
-    if not line or len(line) > MAX_CHARS:
-        raise ValueError("entry line must be 1-200 characters")
+    if not line or len(line) > MAX_CHARS or "\n" in line:
+        raise ValueError("entry line must be one line of 1-200 characters")
     output_path = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_OUTPUT_PATH
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    parent = os.path.dirname(output_path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as handle:
         handle.write(line)
     print(line)
